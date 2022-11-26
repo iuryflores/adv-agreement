@@ -14,7 +14,7 @@ const dealsSchema = new Schema(
       required: true,
     },
     price: Number,
-    processId: { type: Schema.Types.ObjectId, ref: "Process" },
+    processId: { type: Schema.Types.ObjectId, ref: "Process", required: true },
     status: {
       type: Boolean,
       default: true,
