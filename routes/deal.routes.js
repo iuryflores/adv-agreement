@@ -59,6 +59,26 @@ router.patch("/deal/:id", async (req, res, next) => {
   }
 });
 
+//List deals from a specific defendant
+router.get("/deal/defendant/:id", async (req, res, next) => {
+  const { id } = req.params;
 
+  try {
+    const foundDeals = await Deal.find({ defendantId: id });
+    return res.status(200).json(foundDeals);
+  } catch (error) {
+    next(error);
+  }
+});
+
+//List deals from a specific process
+router.get("/deal/process/:id", async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    const foundDeals = await Deal.find({ processId: id });
+    return res.status(200).json(foundDeals);
+  } catch (error) {}
+});
 
 export default router;
