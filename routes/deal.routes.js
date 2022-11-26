@@ -43,4 +43,22 @@ router.delete("/deal/:id", async (req, res, next) => {
   res.status(200).json({ msg: `${foundDeal._id} deleted successfully.` });
 });
 
+//Edit deal
+router.patch("/deal/:id", async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    const foundDeal = await Deal.findByIdAndUpdate(
+      id,
+      { status: false },
+      { new: true }
+    );
+    return res.status(200).json({ msg: "Deal updated" });
+  } catch (error) {
+    next(error);
+  }
+});
+
+
+
 export default router;
