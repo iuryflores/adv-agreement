@@ -22,5 +22,4 @@ const reclamadaSchema = new Schema(
   },
   { timestamps: true }
 );
-const Reclamada = model("Reclamada", reclamadaSchema);
-export default Reclamada;
+export default model("Reclamada", reclamadaSchema);

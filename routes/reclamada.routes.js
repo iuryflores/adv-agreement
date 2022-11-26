@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { isObjectIdOrHexString, Types } from "mongoose";
 import Reclamada from "../models/Reclamada.model.js";
 
 const router = Router();
@@ -48,7 +49,7 @@ router.post("/reclamada", async (req, res, next) => {
 });
 
 //Logic delete reclamada
-router.put("/reclamada/:id", async (req, res, next) => {
+router.patch("/reclamada/:id", async (req, res, next) => {
   const { id } = req.params;
 
   try {
@@ -58,6 +59,31 @@ router.put("/reclamada/:id", async (req, res, next) => {
       new: true,
     });
     return res.status(201).json(update);
+  } catch (error) {
+    next(error);
+  }
+});
+
+//Edit reclamada
+router.put("/reclamada/:id", async (req, res, next) => {
+  const { id } = req.params;
+  const { full_name, cnpj } = req.body;
+
+  try {
+    const newReclamada = await Reclamada.findOneAndUpdate(
+      { _id: id },
+      {
+        full_name,
+        cnpj,
+      },
+      {
+        new: true,
+      }
+    );
+    if (!newReclamada) {
+      return res.status(404).json({ msg: `${full_name} not found!` });
+    }
+    return res.status(200).json(newReclamada);
   } catch (error) {
     next(error);
   }
