@@ -7,8 +7,9 @@ import cors from "cors";
 
 import userRoutes from "./routes/user.routes.js";
 import defendantRoutes from "./routes/defendant.routes.js";
+import processRoutes from "./routes/process.routes.js";
 
-import authMiddleware from './middlewares/auth.middlewares.js'
+import authMiddleware from "./middlewares/auth.middlewares.js";
 
 const app = express();
 
@@ -20,9 +21,10 @@ app.use(express.json());
 
 app.use("/", userRoutes);
 
-app.use(authMiddleware)
+app.use(authMiddleware);
 
 app.use("/", defendantRoutes);
+app.use("/", processRoutes);
 
 app.listen(process.env.PORT, () => {
   console.log(`Server running on port ${process.env.PORT}`);
