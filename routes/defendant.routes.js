@@ -49,7 +49,7 @@ router.post("/defendant", async (req, res, next) => {
 });
 
 //Logic delete defendant
-router.patch("/defendant/:id", async (req, res, next) => {
+router.delete("/defendant/:id", async (req, res, next) => {
   const { id } = req.params;
 
   try {
@@ -71,7 +71,7 @@ router.put("/defendant/:id", async (req, res, next) => {
 
   try {
     const newDefendant = await Defendant.findOneAndUpdate(
-      { _id: id },
+      id ,
       {
         full_name,
         cnpj,
