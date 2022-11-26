@@ -6,7 +6,7 @@ import logger from "morgan";
 import cors from "cors";
 
 import userRoutes from "./routes/user.routes.js";
-import reclamadaRoutes from "./routes/reclamada.routes.js";
+import defendantRoutes from "./routes/defendant.routes.js";
 
 import authMiddleware from './middlewares/auth.middlewares.js'
 
@@ -22,7 +22,7 @@ app.use("/", userRoutes);
 
 app.use(authMiddleware)
 
-app.use("/", reclamadaRoutes);
+app.use("/", defendantRoutes);
 
 app.listen(process.env.PORT, () => {
   console.log(`Server running on port ${process.env.PORT}`);

@@ -2,20 +2,20 @@ import mongoose, { model, Schema, Types } from "mongoose";
 
 const dealsSchema = new Schema(
   {
-    parcelas: Number,
+    quotas: Number,
     userId: {
       type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
-    reclamadaId: {
+    defendantId: {
       type: Schema.Types.ObjectId,
-      ref: "Reclamada",
+      ref: "Defendant",
       required: true,
     },
-    valor: Number,
-    processoId: { type: Schema.Types.ObjectId, ref: "Processo" },
-    ativo: {
+    price: Number,
+    processId: { type: Schema.Types.ObjectId, ref: "Process" },
+    status: {
       type: Boolean,
       default: true,
     },

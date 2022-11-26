@@ -1,6 +1,6 @@
 import mongoose, { Schema, model } from "mongoose";
 
-const reclamadaSchema = new Schema(
+const defendantSchema = new Schema(
   {
     full_name: {
       type: String,
@@ -11,15 +11,15 @@ const reclamadaSchema = new Schema(
       required: true,
       match: /^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$/,
     },
-    processos_id: {
+    process_id: {
       type: Schema.Types.ObjectId,
-      ref: "Processo",
+      ref: "Process",
     },
-    ativo: {
+    status: {
       type: Boolean,
       default: true,
     },
   },
   { timestamps: true }
 );
-export default model("Reclamada", reclamadaSchema);
+export default model("Defendant", defendantSchema);

@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { model, Schema } from "mongoose";
 
 const paymentSchema = new Schema({
   price: Number,
@@ -8,3 +8,4 @@ const paymentSchema = new Schema({
   totalQuota: Number,
   status: { type: Boolean, default: true },
 });
+export default model("Payment", paymentSchema);

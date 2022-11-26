@@ -15,7 +15,7 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    ativo: {
+    status: {
       type: Boolean,
       default: true,
     },
