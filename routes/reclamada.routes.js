@@ -47,4 +47,20 @@ router.post("/reclamada", async (req, res, next) => {
   }
 });
 
+//Logic delete reclamada
+router.put("/reclamada/:id", async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    const foundReclamada = await Reclamada.findById(id);
+    const update = { ativo: `${!foundReclamada.ativo}` };
+    await Reclamada.findByIdAndUpdate(id, update, {
+      new: true,
+    });
+    return res.status(201).json(update);
+  } catch (error) {
+    next(error);
+  }
+});
+
 export default router;
