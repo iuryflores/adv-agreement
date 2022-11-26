@@ -59,4 +59,41 @@ router.post("/process/:id", async (req, res, next) => {
   }
 });
 
+//Edit process
+router.put("/process/:id", async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    const updateProcess = await Process.findByIdAndUpdate(
+      id,
+      { ...req.body },
+      { new: true }
+    );
+    return res.status(200).json(updateProcess);
+  } catch (error) {
+    next(error);
+  }
+});
+
+//Delete process
+router.delete("/process/:id", async (req, res, next) => {
+  const { id } = req.params;
+  console.log(id);
+
+  try {
+    const foundProcess = await Process.findById(id);
+    console.log(foundProcess);
+    if (!foundProcess) {
+      return res.status(404).json({ msg: "Not found!" });
+    }
+    const update = { status: `${!foundProcess.status}` };
+    const processUpdated = await Process.findByIdAndUpdate(id, update, {
+      new: true,
+    });
+    return res.status(200).json(processUpdated);
+  } catch (error) {
+    next(error);
+  }
+});
+
 export default router;
