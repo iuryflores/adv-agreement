@@ -7,5 +7,6 @@ const paymentSchema = new Schema({
   quota: Number,
   totalQuota: Number,
   status: { type: Boolean, default: true },
+  dealId: { type: Schema.Types.ObjectId, ref: "Deals" },
 });
 export default model("Payment", paymentSchema);
