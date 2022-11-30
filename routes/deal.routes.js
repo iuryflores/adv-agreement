@@ -1,6 +1,7 @@
 import { Router } from "express";
 
 import Deal from "../models/Deal.model.js";
+import Payment from "../models/Payment.model.js";
 
 const router = Router();
 
@@ -15,14 +16,31 @@ router.get("/deal", async (req, res, next) => {
 });
 
 //Create deal
-router.post("/deal", async (req, res, next) => {
-  const { quotas, userId, defendantId, price, processId } = req.body;
-
-  if (!userId || !defendantId || !processId) {
-    return res.status(400).json({ msg: "Fill in the mandatory fields." });
-  }
+router.post("/process/:id/deal", async (req, res, next) => {
   try {
+    const { quotas, userId, defendantId, price, processId, dueDate } = req.body;
+    const { id } = req.params;
+
+    if (!userId || !defendantId || !processId) {
+      return res.status(400).json({ msg: "Fill in the mandatory fields." });
+    }
+
     const newDeal = await Deal.create({ ...req.body });
+
+    const { _id } = newDeal;
+    let quotaPrice = price / quotas;
+    var newDate = new Date(dueDate);
+
+    for (let quota = 1; quota <= quotas; quota++) {
+      await Payment.create({
+        price: quotaPrice,
+        dueDate: newDate,
+        quota: quota,
+        totalQuota: quotas,
+        dealId: _id,
+      });
+      newDate.setDate(newDate.getDate() + 30);
+    }
     return res.status(201).json(newDeal);
   } catch (error) {
     next(error);
@@ -40,6 +58,9 @@ router.delete("/deal/:id", async (req, res, next) => {
   }
 
   await Deal.findByIdAndDelete(id);
+
+  await Payment.deleteMany({ dealId: id });
+
   res.status(200).json({ msg: `${foundDeal._id} deleted successfully.` });
 });
 
@@ -64,7 +85,9 @@ router.get("/deal/defendant/:id", async (req, res, next) => {
   const { id } = req.params;
 
   try {
-    const foundDeals = await Deal.find({ defendantId: id });
+    const foundDeals = await Deal.find({ defendantId: id }).populate(
+      "defendantId processId"
+    );
     return res.status(200).json(foundDeals);
   } catch (error) {
     next(error);
