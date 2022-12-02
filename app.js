@@ -8,7 +8,8 @@ import cors from "cors";
 import userRoutes from "./routes/user.routes.js";
 import defendantRoutes from "./routes/defendant.routes.js";
 import processRoutes from "./routes/process.routes.js";
-import dealRoutes from './routes/deal.routes.js'
+import dealRoutes from "./routes/deal.routes.js";
+import paymentRoutes from "./routes/payment.routes.js";
 
 import authMiddleware from "./middlewares/auth.middlewares.js";
 
@@ -27,6 +28,7 @@ app.use(authMiddleware);
 app.use("/", defendantRoutes);
 app.use("/", processRoutes);
 app.use("/", dealRoutes);
+app.use("/", paymentRoutes);
 
 app.listen(process.env.PORT, () => {
   console.log(`Server running on port ${process.env.PORT}`);

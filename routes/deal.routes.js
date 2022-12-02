@@ -21,12 +21,15 @@ router.post("/process/:id/deal", async (req, res, next) => {
     const { quotas, userId, defendantId, price, processId, dueDate } = req.body;
     const { id } = req.params;
 
+    //Check if userId, defendantId and processId was provided.
     if (!userId || !defendantId || !processId) {
       return res.status(400).json({ msg: "Fill in the mandatory fields." });
     }
 
+    //Create new deal
     const newDeal = await Deal.create({ ...req.body });
 
+    //Creating payments based on the created deal
     const { _id } = newDeal;
     let quotaPrice = price / quotas;
     var newDate = new Date(dueDate);
@@ -39,6 +42,7 @@ router.post("/process/:id/deal", async (req, res, next) => {
         totalQuota: quotas,
         dealId: _id,
       });
+      //Set 30 days to next payment
       newDate.setDate(newDate.getDate() + 30);
     }
     return res.status(201).json(newDeal);
@@ -51,14 +55,16 @@ router.post("/process/:id/deal", async (req, res, next) => {
 router.delete("/deal/:id", async (req, res, next) => {
   const { id } = req.params;
 
+  //Finding the deal
   const foundDeal = await Deal.findById(id);
 
+  //Check if deal exists
   if (!foundDeal) {
     return res.status(404).json({ msg: "Deal not found!" });
   }
-
+  //Delete de deal
   await Deal.findByIdAndDelete(id);
-
+  //Delete all payments from that deal
   await Payment.deleteMany({ dealId: id });
 
   res.status(200).json({ msg: `${foundDeal._id} deleted successfully.` });
