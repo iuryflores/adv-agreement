@@ -30,6 +30,8 @@ app.use("/", processRoutes);
 app.use("/", dealRoutes);
 app.use("/", paymentRoutes);
 
+import error from "./error-handling/index.js";
+
 app.listen(process.env.PORT, () => {
   console.log(`Server running on port ${process.env.PORT}`);
 });
