@@ -1,10 +1,11 @@
-const error = (app) => {
-  app.use((req, res) => {
-    res.status(404).json({ msg: "This route does not exists!" });
-  });
-  app.use((err, req, res, next) => {
-    console.error("Error", req, method, req.path, err);
-    res.status(500).json({ msg: "Internal server error!" });
-  });
-};
-export default error;
+const handleError = (app) => {
+  app.use((req, res, next) => {
+    res.status(404).json('Not Found')
+  })
+
+  app.use((error, req, res, next) => {
+    res.status(error.status || 500).json(error.message || error)
+  })
+}
+
+export default handleError

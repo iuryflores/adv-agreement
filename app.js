@@ -5,6 +5,8 @@ import express from "express";
 import logger from "morgan";
 import cors from "cors";
 
+import handleError from "./error-handling/index.js";
+
 import userRoutes from "./routes/user.routes.js";
 import defendantRoutes from "./routes/defendant.routes.js";
 import processRoutes from "./routes/process.routes.js";
@@ -30,7 +32,7 @@ app.use("/", processRoutes);
 app.use("/", dealRoutes);
 app.use("/", paymentRoutes);
 
-import error from "./error-handling/index.js";
+handleError(app);
 
 app.listen(process.env.PORT, () => {
   console.log(`Server running on port ${process.env.PORT}`);
