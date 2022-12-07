@@ -9,7 +9,7 @@ const router = Router();
 router.get("/users", async(req, res, next) => {
     try {
         const allUsers = await User.find();
-        res.status(200).json({msg: `All users here...`});
+        res.status(200).json(allUsers);
     } catch (error) {
         next(error);
     }
