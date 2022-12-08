@@ -48,6 +48,18 @@ router.post("/defendant", async (req, res, next) => {
   }
 });
 
+//Get one defendant
+router.get("/defendant/:id", async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    const foundDefendant = await Defendant.findById(id);
+    return res.status(201).json(foundDefendant);
+  } catch (error) {
+    next(error);
+  }
+});
+
 //Logic delete defendant
 router.delete("/defendant/:id", async (req, res, next) => {
   const { id } = req.params;
