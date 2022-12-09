@@ -29,8 +29,11 @@ router.post("/defendant", async (req, res, next) => {
   }
   try {
     //Check if defendant exists
-    const foundedDefendant = await Defendant.findOne({ cnpj: cnpj, status:true });
-    
+    const foundedDefendant = await Defendant.findOne(
+      { cnpj: cnpj },
+      { status: true }
+    );
+
     if (foundedDefendant) {
       return res.status(400).json({
         msg: `Defendant already exists!`
@@ -84,7 +87,7 @@ router.put("/defendant/:id", async (req, res, next) => {
 
   try {
     const newDefendant = await Defendant.findByIdAndUpdate(
-      {_id : id},
+      { _id: id },
       {
         full_name,
         cnpj
