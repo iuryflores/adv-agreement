@@ -84,7 +84,7 @@ router.put("/defendant/:id", async (req, res, next) => {
 
   try {
     const newDefendant = await Defendant.findByIdAndUpdate(
-      id,
+      {_id : id},
       {
         full_name,
         cnpj
