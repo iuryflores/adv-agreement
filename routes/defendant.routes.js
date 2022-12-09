@@ -6,7 +6,7 @@ const router = Router();
 
 //List Defendant
 router.get("/defendant", async (req, res, next) => {
-  const allDefendants = await Defendant.find();
+  const allDefendants = await Defendant.find({ status: true });
   res.status(200).json(allDefendants);
 });
 
@@ -32,7 +32,7 @@ router.post("/defendant", async (req, res, next) => {
     const foundedDefendant = await Defendant.findOne({ cnpj });
     if (foundedDefendant) {
       return res.status(400).json({
-        msg: `Defendant already exists!`,
+        msg: `Defendant already exists!`
       });
     }
 
@@ -68,7 +68,7 @@ router.delete("/defendant/:id", async (req, res, next) => {
     const foundDefendant = await Defendant.findById(id);
     const update = { status: `${!foundDefendant.status}` };
     await Defendant.findByIdAndUpdate(id, update, {
-      new: true,
+      new: true
     });
     return res.status(201).json(update);
   } catch (error) {
@@ -83,13 +83,13 @@ router.put("/defendant/:id", async (req, res, next) => {
 
   try {
     const newDefendant = await Defendant.findOneAndUpdate(
-      id ,
+      id,
       {
         full_name,
-        cnpj,
+        cnpj
       },
       {
-        new: true,
+        new: true
       }
     );
     if (!newDefendant) {
