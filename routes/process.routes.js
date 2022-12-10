@@ -14,6 +14,16 @@ router.get("/process", async (req, res, next) => {
   }
 });
 
+//Get process by id
+router.get("/process/:id", async (req, res, next) => {
+  try {
+    const processFound = await Process.findById(id);
+    return res.status(200).json(processFound);
+  } catch (error) {
+    next(error);
+  }
+});
+
 //Create new process
 router.post("/process/:id", async (req, res, next) => {
   const {
@@ -23,7 +33,7 @@ router.post("/process/:id", async (req, res, next) => {
     subject,
     processKey,
     jurisdiction,
-    judgment,
+    judgment
   } = req.body;
   const { id } = req.params;
 
@@ -35,7 +45,7 @@ router.post("/process/:id", async (req, res, next) => {
     }
 
     const foundProcess = await Process.findOne({
-      processNumber: processNumber,
+      processNumber: processNumber
     });
     if (foundProcess) {
       return res
@@ -51,7 +61,7 @@ router.post("/process/:id", async (req, res, next) => {
       subject,
       processKey,
       jurisdiction,
-      judgment,
+      judgment
     });
     return res.status(201).json(newProcess);
   } catch (error) {
@@ -88,7 +98,7 @@ router.delete("/process/:id", async (req, res, next) => {
     }
     const update = { status: `${!foundProcess.status}` };
     const processUpdated = await Process.findByIdAndUpdate(id, update, {
-      new: true,
+      new: true
     });
     return res.status(200).json(processUpdated);
   } catch (error) {
