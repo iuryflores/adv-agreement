@@ -105,4 +105,15 @@ router.put("/defendant/:id", async (req, res, next) => {
   }
 });
 
+//Get process from one defendant
+router.get("/defendant/:id/process", async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const defendantProcess = await Defendant.find({ _id: id });
+    return res.status(200).json(defendantProcess);
+  } catch (error) {
+    next(error);
+  }
+});
+
 export default router;
