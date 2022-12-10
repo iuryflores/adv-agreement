@@ -1,6 +1,7 @@
 import { Router } from "express";
 
 import Defendant from "../models/Defendant.model.js";
+import Process from "../models/Process.model.js";
 
 const router = Router();
 
@@ -105,12 +106,60 @@ router.put("/defendant/:id", async (req, res, next) => {
   }
 });
 
-//Get process from one defendant
+//Get all process from one defendant
 router.get("/defendant/:id/process", async (req, res, next) => {
   const { id } = req.params;
   try {
-    const defendantProcess = await Defendant.find({ _id: id });
+    const defendantProcess = await Process.find({ defendantId: id });
     return res.status(200).json(defendantProcess);
+  } catch (error) {
+    next(error);
+  }
+});
+
+//Create process of defendant
+router.post("/defendant/:id/process", async (req, res, next) => {
+  const { id } = req.params;
+  const {
+    dateProcess,
+    processNumber,
+    complainantName,
+    subject,
+    processKey,
+    jurisdiction,
+    judgment,
+    defendantId
+  } = req.body;
+
+  try {
+    //Check if Process exists
+    const foundedProcess = await Process.findOne(
+      { processNumber: processNumber },
+      { status: true }
+    );
+
+    if (foundedProcess) {
+      return res.status(400).json({
+        msg: `Process already exists!`
+      });
+    }
+
+    //Create Process
+    const newProcess = await Process.create({
+      dateProcess,
+      processNumber,
+      complainantName,
+      subject,
+      processKey,
+      jurisdiction,
+      judgment,
+      defendantId: id
+    });
+
+    //Get id from newProcess
+    const { _id } = newProcess;
+
+    res.status(201).json({ processNumber, complainantName });
   } catch (error) {
     next(error);
   }
