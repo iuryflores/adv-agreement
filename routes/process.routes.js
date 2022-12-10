@@ -16,6 +16,7 @@ router.get("/process", async (req, res, next) => {
 
 //Get process by id
 router.get("/process/:id", async (req, res, next) => {
+  const { id } = req.params;
   try {
     const processFound = await Process.findById(id);
     return res.status(200).json(processFound);
