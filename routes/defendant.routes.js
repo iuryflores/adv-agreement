@@ -110,7 +110,7 @@ router.put("/defendant/:id", async (req, res, next) => {
 router.get("/defendant/:id/process", async (req, res, next) => {
   const { id } = req.params;
   try {
-    const defendantProcess = await Process.find({ defendantId: id });
+    const defendantProcess = await Process.find({ defendantId: id }).populate("defendantId");
     return res.status(200).json(defendantProcess);
   } catch (error) {
     next(error);
