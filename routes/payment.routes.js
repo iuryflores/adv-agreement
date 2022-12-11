@@ -89,4 +89,5 @@ router.delete("/payment/:id", async (req, res, next) => {
     res.status(200).json(payDayDeleted);
   } catch (error) {}
 });
+
 export default router;

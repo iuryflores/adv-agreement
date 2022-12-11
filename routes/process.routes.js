@@ -24,7 +24,16 @@ router.get("/process/:id", async (req, res, next) => {
     next(error);
   }
 });
-
+//Get process to add deal
+router.get("/process/:id/add-deal", async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const processFound = await Process.findById(id).populate('defendantId');
+    return res.status(200).json(processFound);
+  } catch (error) {
+    next(error);
+  }
+});
 //Create new process
 router.post("/process/:id", async (req, res, next) => {
   const {

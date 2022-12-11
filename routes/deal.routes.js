@@ -16,21 +16,28 @@ router.get("/deal", async (req, res, next) => {
 });
 
 //Create deal
-router.post("/process/:id/deal", async (req, res, next) => {
+router.post("/process/:id/add-deal", async (req, res, next) => {
+  const { quotas, price, dueDate, defendantId, processId } = req.body;
+  
   try {
-    const { quotas, userId, defendantId, price, processId, dueDate } = req.body;
-    const { id } = req.params;
-
+    console.log(defendantId, processId)
     //Check if userId, defendantId and processId was provided.
-    if (!userId || !defendantId || !processId) {
+    if (!defendantId || !processId) {
       return res.status(400).json({ msg: "Fill in the mandatory fields." });
     }
 
     //Create new deal
-    const newDeal = await Deal.create({ ...req.body });
+    const newDeal = await Deal.create({
+      quotas,
+      price,
+      defendantId,
+      processId
+    });
+    
 
     //Creating payments based on the created deal
     const { _id } = newDeal;
+
     let quotaPrice = price / quotas;
     var newDate = new Date(dueDate);
 
@@ -40,7 +47,7 @@ router.post("/process/:id/deal", async (req, res, next) => {
         dueDate: newDate,
         quota: quota,
         totalQuota: quotas,
-        dealId: _id,
+        dealId: _id
       });
       //Set 30 days to next payment
       newDate.setDate(newDate.getDate() + 30);
