@@ -1,4 +1,5 @@
 import { Router } from "express";
+import Deal from "../models/Deal.model.js";
 
 import Process from "../models/Process.model.js";
 
@@ -20,9 +21,7 @@ router.get("/process", async (req, res, next) => {
 router.get("/process/:id", async (req, res, next) => {
   const { id } = req.params;
   try {
-    const processFound = await Process.findById(id).populate(
-      "defendantId"
-    );
+    const processFound = await Process.findById(id).populate("defendantId");
     console.log(processFound);
     return res.status(200).json(processFound);
   } catch (error) {
@@ -105,14 +104,20 @@ router.put("/process/:id", async (req, res, next) => {
 //Delete process
 router.delete("/process/:id", async (req, res, next) => {
   const { id } = req.params;
-  console.log(id);
 
   try {
     const foundProcess = await Process.findById(id);
-    console.log(foundProcess);
+
     if (!foundProcess) {
       return res.status(404).json({ msg: "Not found!" });
     }
+
+    const foundDeal = await Deal.findOne({ processId: id });
+    console.log(foundDeal)
+    if(foundDeal) {
+      return res.status(400).json({msg:"There is an active deal for this process! Please delete deal first."})
+    }
+
     const update = { status: `${!foundProcess.status}` };
     const processUpdated = await Process.findByIdAndUpdate(id, update, {
       new: true

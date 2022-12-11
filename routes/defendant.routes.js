@@ -81,6 +81,18 @@ router.delete("/defendant/:id", async (req, res, next) => {
 
   try {
     const foundDefendant = await Defendant.findById(id);
+
+    const processFound = await Process.findOne({
+      defendantId: id,
+      status: true
+    });
+
+    if (processFound) {
+      return res.status(400).json({
+        msg: "There is a process active for this defendant. Delete this processe first."
+      });
+    }
+
     const update = { status: `${!foundDefendant.status}` };
     await Defendant.findByIdAndUpdate(id, update, {
       new: true
@@ -120,9 +132,10 @@ router.put("/defendant/:id", async (req, res, next) => {
 router.get("/defendant/:id/process", async (req, res, next) => {
   const { id } = req.params;
   try {
-    const defendantProcess = await Process.find({ defendantId: id, status:true }).populate(
-      "defendantId"
-    );
+    const defendantProcess = await Process.find({
+      defendantId: id,
+      status: true
+    }).populate("defendantId");
     return res.status(200).json(defendantProcess);
   } catch (error) {
     next(error);
