@@ -18,7 +18,7 @@ router.get("/process", async (req, res, next) => {
 router.get("/process/:id", async (req, res, next) => {
   const { id } = req.params;
   try {
-    const processFound = await Process.findById(id);
+    const processFound = await Process.findById(id).populate('defendantId');
     return res.status(200).json(processFound);
   } catch (error) {
     next(error);
