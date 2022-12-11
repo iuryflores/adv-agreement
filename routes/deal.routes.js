@@ -8,7 +8,7 @@ const router = Router();
 //List all deals
 router.get("/deals", async (req, res, next) => {
   try {
-    const allDeals = await Deal.find();
+    const allDeals = await Deal.find().populate("processId").populate('defendantId')
     return res.status(200).json(allDeals);
   } catch (error) {
     next(error);
