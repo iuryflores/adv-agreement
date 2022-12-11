@@ -4,6 +4,16 @@ import Payment from "../models/Payment.model.js";
 
 const router = Router();
 
+
+//List all parcels
+router.get("/parcels", async (req, res, next) => {
+  try {
+    const allPayments = await Payment.find();
+    res.status(200).json(allPayments);
+  } catch (error) {
+    next(error);
+  }
+});
 //List all payments
 router.get("/payments", async (req, res, next) => {
   try {

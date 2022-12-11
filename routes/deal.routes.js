@@ -6,7 +6,7 @@ import Payment from "../models/Payment.model.js";
 const router = Router();
 
 //List all deals
-router.get("/deal", async (req, res, next) => {
+router.get("/deals", async (req, res, next) => {
   try {
     const allDeals = await Deal.find();
     return res.status(200).json(allDeals);
@@ -18,9 +18,8 @@ router.get("/deal", async (req, res, next) => {
 //Create deal
 router.post("/process/:id/add-deal", async (req, res, next) => {
   const { quotas, price, dueDate, defendantId, processId } = req.body;
-  
+
   try {
-    console.log(defendantId, processId)
     //Check if userId, defendantId and processId was provided.
     if (!defendantId || !processId) {
       return res.status(400).json({ msg: "Fill in the mandatory fields." });
@@ -33,7 +32,6 @@ router.post("/process/:id/add-deal", async (req, res, next) => {
       defendantId,
       processId
     });
-    
 
     //Creating payments based on the created deal
     const { _id } = newDeal;
