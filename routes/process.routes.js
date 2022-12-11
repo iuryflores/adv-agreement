@@ -7,7 +7,9 @@ const router = Router();
 //Get all process
 router.get("/process", async (req, res, next) => {
   try {
-    const allProcess = await Process.find().populate('defendantId');
+    const allProcess = await Process.find({ status: true }).populate(
+      "defendantId"
+    );
     return res.status(200).json(allProcess);
   } catch (error) {
     next(error);
@@ -18,7 +20,7 @@ router.get("/process", async (req, res, next) => {
 router.get("/process/:id", async (req, res, next) => {
   const { id } = req.params;
   try {
-    const processFound = await Process.findById(id).populate('defendantId');
+    const processFound = await Process.findById(id).populate("defendantId");
     return res.status(200).json(processFound);
   } catch (error) {
     next(error);
@@ -28,7 +30,7 @@ router.get("/process/:id", async (req, res, next) => {
 router.get("/process/:id/add-deal", async (req, res, next) => {
   const { id } = req.params;
   try {
-    const processFound = await Process.findById(id).populate('defendantId');
+    const processFound = await Process.findById(id).populate("defendantId");
     return res.status(200).json(processFound);
   } catch (error) {
     next(error);
