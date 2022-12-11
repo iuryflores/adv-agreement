@@ -64,7 +64,17 @@ router.get("/defendant/:id", async (req, res, next) => {
     next(error);
   }
 });
+//Get one defendant to add process
+router.get("/defendant/:id/add-process", async (req, res, next) => {
+  const { id } = req.params;
 
+  try {
+    const foundDefendant = await Defendant.findById(id);
+    return res.status(201).json(foundDefendant);
+  } catch (error) {
+    next(error);
+  }
+});
 //Logic delete defendant
 router.delete("/defendant/:id", async (req, res, next) => {
   const { id } = req.params;
@@ -110,7 +120,9 @@ router.put("/defendant/:id", async (req, res, next) => {
 router.get("/defendant/:id/process", async (req, res, next) => {
   const { id } = req.params;
   try {
-    const defendantProcess = await Process.find({ defendantId: id }).populate("defendantId");
+    const defendantProcess = await Process.find({ defendantId: id }).populate(
+      "defendantId"
+    );
     return res.status(200).json(defendantProcess);
   } catch (error) {
     next(error);
@@ -118,7 +130,7 @@ router.get("/defendant/:id/process", async (req, res, next) => {
 });
 
 //Create process of defendant
-router.post("/defendant/:id/process", async (req, res, next) => {
+router.post("/defendant/:id/add-process", async (req, res, next) => {
   const { id } = req.params;
   const {
     dateProcess,
@@ -127,8 +139,7 @@ router.post("/defendant/:id/process", async (req, res, next) => {
     subject,
     processKey,
     jurisdiction,
-    judgment,
-    defendantId
+    judgment
   } = req.body;
 
   try {
@@ -155,9 +166,6 @@ router.post("/defendant/:id/process", async (req, res, next) => {
       judgment,
       defendantId: id
     });
-
-    //Get id from newProcess
-    const { _id } = newProcess;
 
     res.status(201).json({ processNumber, complainantName });
   } catch (error) {
