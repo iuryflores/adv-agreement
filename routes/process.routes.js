@@ -7,7 +7,7 @@ const router = Router();
 //Get all process
 router.get("/process", async (req, res, next) => {
   try {
-    const allProcess = await Process.find();
+    const allProcess = await Process.find().populate('defendantId');
     return res.status(200).json(allProcess);
   } catch (error) {
     next(error);
