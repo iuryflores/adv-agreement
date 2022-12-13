@@ -22,7 +22,7 @@ router.get("/process/:id", async (req, res, next) => {
   const { id } = req.params;
   try {
     const processFound = await Process.findById(id).populate("defendantId");
-    console.log(processFound);
+ 
     return res.status(200).json(processFound);
   } catch (error) {
     next(error);
@@ -111,7 +111,7 @@ router.delete("/process/:id", async (req, res, next) => {
     }
 
     const foundDeal = await Deal.findOne({ processId: id });
-    console.log(foundDeal)
+
     if(foundDeal) {
       return res.status(400).json({msg:"There is an active deal for this process! Please delete deal first."})
     }
