@@ -16,7 +16,7 @@ router.get("/deals", async (req, res, next) => {
 });
 
 //Create deal
-router.post("/process/:id/add-deal", async (req, res, next) => {
+router.post("/deal", async (req, res, next) => {
   const { quotas, price, dueDate, defendantId, processId } = req.body;
 
   try {
@@ -103,16 +103,6 @@ router.get("/deal/defendant/:id", async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-});
-
-//List deals from a specific process
-router.get("/deal/process/:id", async (req, res, next) => {
-  const { id } = req.params;
-
-  try {
-    const foundDeals = await Deal.find({ processId: id });
-    return res.status(200).json(foundDeals);
-  } catch (error) {}
 });
 
 //List deals from a specific process
