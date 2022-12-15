@@ -7,8 +7,11 @@ const router = Router();
 
 //List all deals
 router.get("/deals", async (req, res, next) => {
+  console.log(req.body);
   try {
-    const allDeals = await Deal.find().populate("processId").populate('defendantId')
+    const allDeals = await Deal.find()
+      .populate("processId")
+      .populate("defendantId");
     return res.status(200).json(allDeals);
   } catch (error) {
     next(error);
@@ -106,11 +109,13 @@ router.get("/deal/defendant/:id", async (req, res, next) => {
 });
 
 //List deals from a specific process
-router.get("/deal/:id", async (req, res, next) => {
+router.get("/deal/process/:id", async (req, res, next) => {
   const { id } = req.params;
 
   try {
-    const foundDeals = await Deal.findById(id).populate("processId").populate("defendantId");
+    const foundDeals = await Deal.find({ processId: id })
+      .populate("processId")
+      .populate("defendantId");
     return res.status(200).json(foundDeals);
   } catch (error) {}
 });
