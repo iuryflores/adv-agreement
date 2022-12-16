@@ -7,7 +7,7 @@ const router = Router();
 //List all parcels
 router.get("/parcels", async (req, res, next) => {
   try {
-    const allPayments = await Payment.find({ payDay: null }).populate("dealId");
+    const allPayments = await Payment.find({ payDay: null }).populate("dealId").sort({dueDate:-1});
     res.status(200).json(allPayments);
   } catch (error) {
     next(error);
