@@ -17,7 +17,10 @@ router.get("/parcels", async (req, res, next) => {
 router.get("/parcels/bydeal/:dealId", async (req, res, next) => {
   const { dealId } = req.params;
   try {
-    const allPayments = await Payment.find({dealId}).populate({path:"dealId",populate:{path:"processId defendantId"}});
+    const allPayments = await Payment.find({ dealId }).populate({
+      path: "dealId",
+      populate: { path: "processId defendantId" },
+    });
     res.status(200).json(allPayments);
   } catch (error) {
     next(error);
@@ -47,7 +50,7 @@ router.put("/payment/pay/:id", async (req, res, next) => {
   const { id } = req.params;
 
   try {
-    const foundPayment = await Payment.findById(id);
+    const foundPayment = await Payment.find({ dealId: id });
 
     if (!foundPayment) {
       return res.status(404).json({ msg: "Payment not found!" });
