@@ -7,8 +7,11 @@ const router = Router();
 
 //List all deals
 router.get("/deals", async (req, res, next) => {
+  console.log(req.body);
   try {
-    const allDeals = await Deal.find().populate("processId").populate('defendantId')
+    const allDeals = await Deal.find()
+      .populate("processId")
+      .populate("defendantId");
     return res.status(200).json(allDeals);
   } catch (error) {
     next(error);
@@ -16,7 +19,7 @@ router.get("/deals", async (req, res, next) => {
 });
 
 //Create deal
-router.post("/process/:id/add-deal", async (req, res, next) => {
+router.post("/deal", async (req, res, next) => {
   const { quotas, price, dueDate, defendantId, processId } = req.body;
 
   try {
@@ -110,7 +113,9 @@ router.get("/deal/process/:id", async (req, res, next) => {
   const { id } = req.params;
 
   try {
-    const foundDeals = await Deal.find({ processId: id });
+    const foundDeals = await Deal.find({ processId: id })
+      .populate("processId")
+      .populate("defendantId");
     return res.status(200).json(foundDeals);
   } catch (error) {}
 });

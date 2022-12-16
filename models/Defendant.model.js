@@ -4,21 +4,23 @@ const defendantSchema = new Schema(
   {
     full_name: {
       type: String,
-      required: true,
+      required: true
     },
     cnpj: {
       type: String,
       required: true,
-      match: /^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$/,
+      match: /^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$/
     },
-    process_id: {
-      type: Schema.Types.ObjectId,
-      ref: "Process",
-    },
+    process_id: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Process"
+      }
+    ],
     status: {
       type: Boolean,
-      default: true,
-    },
+      default: true
+    }
   },
   { timestamps: true }
 );

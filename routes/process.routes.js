@@ -1,5 +1,6 @@
 import { Router } from "express";
 import Deal from "../models/Deal.model.js";
+import Defendant from "../models/Defendant.model.js";
 
 import Process from "../models/Process.model.js";
 
@@ -22,24 +23,14 @@ router.get("/process/:id", async (req, res, next) => {
   const { id } = req.params;
   try {
     const processFound = await Process.findById(id).populate("defendantId");
-    console.log(processFound);
-    return res.status(200).json(processFound);
-  } catch (error) {
-    next(error);
-  }
-});
-//Get process to add deal
-router.get("/process/:id/add-deal", async (req, res, next) => {
-  const { id } = req.params;
-  try {
-    const processFound = await Process.findOne({ _id: id, status: true })
+
     return res.status(200).json(processFound);
   } catch (error) {
     next(error);
   }
 });
 //Create new process
-router.post("/process/:id", async (req, res, next) => {
+router.post("/process", async (req, res, next) => {
   const {
     dateProcess,
     processNumber,
@@ -47,12 +38,12 @@ router.post("/process/:id", async (req, res, next) => {
     subject,
     processKey,
     jurisdiction,
-    judgment
+    judgment,
+    defendantId
   } = req.body;
-  const { id } = req.params;
 
   try {
-    if (!dateProcess || !complainantName) {
+    if (!dateProcess || !complainantName || !defendantId) {
       return res
         .status(400)
         .json({ msg: "Process date and complainant name is required." });
@@ -63,20 +54,25 @@ router.post("/process/:id", async (req, res, next) => {
     });
     if (foundProcess) {
       return res
-        .status(404)
+        .status(400)
         .json({ msg: `Process n. ${processNumber} already exists!` });
     }
 
     const newProcess = await Process.create({
       dateProcess,
       processNumber,
-      defendantId: id,
+      defendantId,
       complainantName,
       subject,
       processKey,
       jurisdiction,
       judgment
     });
+    const { _id } = newProcess._id;
+    await Defendant.findByIdAndUpdate(defendantId, {
+      $push: { process_id: _id }
+    });
+
     return res.status(201).json(newProcess);
   } catch (error) {
     next(error);
@@ -111,9 +107,11 @@ router.delete("/process/:id", async (req, res, next) => {
     }
 
     const foundDeal = await Deal.findOne({ processId: id });
-    console.log(foundDeal)
-    if(foundDeal) {
-      return res.status(400).json({msg:"There is an active deal for this process! Please delete deal first."})
+
+    if (foundDeal) {
+      return res.status(400).json({
+        msg: "There is an active deal for this process! Please delete deal first."
+      });
     }
 
     const update = { status: `${!foundProcess.status}` };

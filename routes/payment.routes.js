@@ -4,18 +4,28 @@ import Payment from "../models/Payment.model.js";
 
 const router = Router();
 
-
 //List all parcels
 router.get("/parcels", async (req, res, next) => {
   try {
-    const allPayments = await Payment.find();
+    const allPayments = await Payment.find().populate("dealId");
     res.status(200).json(allPayments);
   } catch (error) {
     next(error);
   }
 });
+//List parcels by deal
+router.get("/parcels/bydeal/:dealId", async (req, res, next) => {
+  const { dealId } = req.params;
+  try {
+    const allPayments = await Payment.find({dealId}).populate({path:"dealId",populate:{path:"processId defendantId"}});
+    res.status(200).json(allPayments);
+  } catch (error) {
+    next(error);
+  }
+});
+
 //List all payments
-router.get("/payments", async (req, res, next) => {
+router.get("/parcels/:id", async (req, res, next) => {
   try {
     const allPayments = await Payment.find();
     res.status(200).json(allPayments);
@@ -85,11 +95,10 @@ router.put("/payment/edit/:id", async (req, res, next) => {
 router.delete("/payment/:id", async (req, res, next) => {
   const { id } = req.params;
 
-
   try {
-    const foundPayment = await Payment.findById(id)
-    if(!foundPayment){
-        return res.status(404).json({msg:"Payment not found!"})
+    const foundPayment = await Payment.findById(id);
+    if (!foundPayment) {
+      return res.status(404).json({ msg: "Payment not found!" });
     }
     const payDayDeleted = await Payment.findByIdAndUpdate(
       id,
