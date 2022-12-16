@@ -13,6 +13,17 @@ router.get("/parcels", async (req, res, next) => {
     next(error);
   }
 });
+//List parcels by deal
+router.get("/parcels/bydeal/:dealId", async (req, res, next) => {
+  const { dealId } = req.params;
+  try {
+    const allPayments = await Payment.find({dealId}).populate({path:"dealId",populate:{path:"processId defendantId"}});
+    res.status(200).json(allPayments);
+  } catch (error) {
+    next(error);
+  }
+});
+
 //List all payments
 router.get("/parcels/:id", async (req, res, next) => {
   try {
