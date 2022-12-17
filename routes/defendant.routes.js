@@ -147,14 +147,14 @@ router.post("/defendant/:id/add-process", async (req, res, next) => {
 
   try {
     //Check if Process exists
-    const foundedProcess = await Process.findOne(
-      { processNumber: processNumber },
-      { status: true }
-    );
+    const foundedProcess = await Process.findOne({
+      processNumber: processNumber,
+      status: true
+    });
 
     if (foundedProcess) {
       return res.status(400).json({
-        msg: `Process already exists!`
+        msg: `Process n. ${processNumber} already exists!`
       });
     }
 
