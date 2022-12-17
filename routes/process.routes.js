@@ -91,7 +91,7 @@ router.post("/process", async (req, res, next) => {
 });
 
 //Edit process
-router.put("/process-edit/:id", async (req, res, next) => {
+router.patch("/process-edit/:id", async (req, res, next) => {
   const { id } = req.params;
   const {
     dateProcess,
