@@ -5,15 +5,7 @@ import jwt from "jsonwebtoken";
 
 const router = Router();
 
-//List User
-router.get("/users", async(req, res, next) => {
-    try {
-        const allUsers = await User.find();
-        res.status(200).json(allUsers);
-    } catch (error) {
-        next(error);
-    }
-});
+
 
 //Create User
 router.post("/user/auth/signup", async(req, res, next) => {
