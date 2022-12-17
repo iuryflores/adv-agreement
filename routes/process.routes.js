@@ -61,7 +61,7 @@ router.post("/process", async (req, res, next) => {
     }
 
     const foundProcess = await Process.findOne({
-      processNumber: processNumber
+      processNumber: processNumber, status:true
     });
     if (foundProcess) {
       return res
