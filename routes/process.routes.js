@@ -93,11 +93,26 @@ router.post("/process", async (req, res, next) => {
 //Edit process
 router.put("/process-edit/:id", async (req, res, next) => {
   const { id } = req.params;
+  const {
+    dateProcess,
+    processNumber,
+    complainantName,
+    subject,
+    judgment,
+    jurisdiction
+  } = req.body;
 
   try {
     const updateProcess = await Process.findByIdAndUpdate(
-      id,
-      { ...req.body },
+      { _id: id },
+      {
+        dateProcess,
+        processNumber,
+        complainantName,
+        subject,
+        judgment,
+        jurisdiction
+      },
       { new: true }
     );
     return res.status(200).json(updateProcess);
