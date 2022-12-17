@@ -51,7 +51,7 @@ https://github.com/iuryflores/adv-agreement-client
 ```
 
 
-## Autores
+## Author
 
 - [@iuryflores](https://www.github.com/iuryflores)
 
