@@ -1,7 +1,7 @@
 
 # Adv Manager API
 
-This API was created to help lawers to manager the agreement pay of all of they lawsuit, he can add lawsuit contents as date, jurisdiction, complainant name and more, can add agreement of process, and manager payments parcels of the agreements.
+This API was created to help lawyers to manager the agreement pay of all of they lawsuit, he can add lawsuit contents as date, jurisdiction, complainant name and more, can add agreement of process, and manager payments parcels of the agreements.
 ## Dependencies
 
 - bcryptjs
